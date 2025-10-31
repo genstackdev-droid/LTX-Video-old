@@ -6,7 +6,7 @@ Targets <2% quality degradation while reducing VRAM usage by ~20%.
 
 import torch
 import torch.nn as nn
-from typing import Optional, Dict, List, Tuple
+from typing import Optional, Dict, List
 from enum import Enum
 
 

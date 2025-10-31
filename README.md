@@ -39,6 +39,19 @@ The model is trained on a large-scale dataset of diverse videos and can generate
 
 The model supports image-to-video, multi-keyframe conditioning, keyframe-based animation, video extension (both forward and backward), video-to-video transformations, and any combination of these features.
 
+## 🚀 Enhanced Features (LTX-Video Enhanced)
+
+This repository includes enhanced modules bridging LTXV 0.9.8 toward LTX-2 capabilities:
+
+- **🎵 Audio-Video Synchronization**: Joint audio-video generation with <100ms temporal alignment
+- **🎬 Native 4K Support**: Hierarchical VAE and sparse attention for efficient 4K generation
+- **🖼️ Multi-Keyframe Conditioning**: Control video with 2-5 reference frames at different positions
+- **📹 Extended Generation**: Create 10-15 second continuous videos with autoregressive conditioning
+- **⚡ VRAM Optimization**: 30-40% memory reduction through efficient attention and FP8 quantization
+- **🎮 Camera Control**: 3D-aware camera movements (pan, zoom, orbit, dolly)
+
+See the [Enhanced Documentation](docs/ARCHITECTURE.md) for technical details and [Implementation Guide](docs/IMPLEMENTATION_GUIDE.md) for usage examples.
+
 ### Image-to-video examples
 | | | |
 |:---:|:---:|:---:|

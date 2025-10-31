@@ -8,7 +8,7 @@ References:
 
 import torch
 import torch.nn as nn
-from typing import Optional, Tuple
+from typing import Optional
 from diffusers import ConfigMixin, ModelMixin
 from diffusers.configuration_utils import register_to_config
 

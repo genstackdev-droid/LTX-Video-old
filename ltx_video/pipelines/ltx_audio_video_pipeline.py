@@ -9,11 +9,9 @@ Based on research from:
 """
 
 import torch
-import torch.nn as nn
 from typing import Optional, Union, List, Tuple, Callable
 from dataclasses import dataclass
 
-from diffusers import DiffusionPipeline
 from diffusers.utils import BaseOutput
 
 from ltx_video.models.audio.audio_encoder import AudioEncoder

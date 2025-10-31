@@ -6,7 +6,7 @@ maintaining consistency across the full video duration.
 
 import torch
 import torch.nn as nn
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Optional
 from dataclasses import dataclass
 
 
