@@ -83,18 +83,20 @@ def check_and_download_models():
             print("\n" + "-" * 70)
             print("AUTOMATIC DOWNLOAD:")
             print("-" * 70)
-            print("\nTo auto-download all models, run:")
-            print(
-                '  python -c "from model_downloader import download_all_models; download_all_models()"'
-            )
+            print("\nOption 1 - Set model_path to 'Lightricks/LTX-Video' in the node")
+            print("  Models will auto-download on first use")
+            print("\nOption 2 - Pre-download using Python:")
+            print("  from huggingface_hub import hf_hub_download")
+            print("  hf_hub_download('Lightricks/LTX-Video', 'ltxv-13b-0.9.8-distilled.safetensors', local_dir='models/checkpoints')")
 
             print("\n" + "-" * 70)
             print("MANUAL DOWNLOAD:")
             print("-" * 70)
-            print("\nOr download manually using:")
-            print(
-                "  huggingface-cli download <model_repo> <filename> --local-dir <path>"
-            )
+            print("\nDownload using modern HuggingFace Hub API:")
+            print("  pip install -U huggingface-hub")
+            print("  python -c \"from huggingface_hub import hf_hub_download; hf_hub_download('Lightricks/LTX-Video', 'ltxv-13b-0.9.8-distilled.safetensors', local_dir='models/checkpoints')\"")
+            print("\nOr download directly from browser:")
+            print("  https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors")
 
             print("\n" + "=" * 70)
             print("NOTE: LTX-Video nodes will not function until models are installed.")

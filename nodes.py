@@ -322,51 +322,194 @@ class LTXVFullPipeline:
 
     def _load_pipeline(self, model_path: str):
         """
-        Load the LTX-Video pipeline from downloaded models.
+        Load the LTX-Video pipeline from HuggingFace or local checkpoint.
         
-        This method requires the models to be downloaded first.
-        See MODELS.md for download instructions.
-        
-        The full implementation needs:
-        1. Load checkpoint from models/checkpoints/
-        2. Load VAE, transformer, text encoder
-        3. Initialize scheduler and patchifier
-        4. Assemble into LTXVideoPipeline
-        
-        For reference, see ltx_video/inference.py load_model() function.
+        Supports both HuggingFace model repos and local safetensors files.
         """
         try:
-            # Attempt to locate the downloaded checkpoint
+            import json
+            import os
             from pathlib import Path
-            comfyui_base = Path(__file__).parent.parent.parent
-            checkpoint_dir = comfyui_base / "models" / "checkpoints"
+            from safetensors import safe_open
+            from ltx_video.models.transformers.symmetric_patchifier import SymmetricPatchifier
             
-            # Look for the LTX-Video checkpoint
-            checkpoint_path = checkpoint_dir / "ltxv-13b-0.9.8-distilled.safetensors"
+            print(f"[LTX-Video] Loading pipeline from: {model_path}")
             
-            if not checkpoint_path.exists():
-                raise FileNotFoundError(
-                    f"LTX-Video checkpoint not found at {checkpoint_path}\n\n"
-                    "Please download the required models first:\n"
-                    "1. See MODELS.md for complete download instructions\n"
-                    "2. Or run: python -c \"from model_downloader import download_all_models; download_all_models()\"\n"
-                    "3. Ensure models are in the correct ComfyUI/models/ directories"
+            # Determine if model_path is a HuggingFace repo or local path
+            if "/" in model_path and not os.path.exists(model_path):
+                # HuggingFace repo format: "Lightricks/LTX-Video"
+                print(f"[LTX-Video] Downloading from HuggingFace: {model_path}")
+                
+                try:
+                    from huggingface_hub import hf_hub_download, login, HfFolder
+                    
+                    # Check if authentication is needed (for private models)
+                    # For public models like Lightricks/LTX-Video, this is optional
+                    token = HfFolder.get_token()
+                    if token:
+                        print("[LTX-Video] Using existing HuggingFace token")
+                    else:
+                        print("[LTX-Video] No HuggingFace token found (OK for public models)")
+                    
+                    # Download the main checkpoint using modern API
+                    print("[LTX-Video] Downloading checkpoint (~13GB, may take time)...")
+                    ckpt_path = hf_hub_download(
+                        repo_id=model_path,
+                        filename="ltxv-13b-0.9.8-distilled.safetensors",
+                        repo_type="model",
+                        resume_download=True,  # Resume partial downloads
+                        local_files_only=False,  # Always check for updates
+                    )
+                    print(f"[LTX-Video] ✅ Checkpoint downloaded to: {ckpt_path}")
+                    
+                except Exception as e:
+                    raise RuntimeError(
+                        f"Failed to download model from HuggingFace: {e}\n\n"
+                        "Solutions:\n"
+                        "1. Check your internet connection\n"
+                        "2. Install huggingface-hub: pip install -U huggingface-hub\n"
+                        "3. For private models, login first:\n"
+                        "   from huggingface_hub import login\n"
+                        "   login(token='your_token_here')\n"
+                        "   Or use: huggingface-cli login (if CLI is available)\n"
+                        "4. Or download manually from:\n"
+                        "   https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors\n"
+                        "   and place in ComfyUI/models/checkpoints/"
+                    )
+                
+                # Set text encoder path - will download from HuggingFace
+                text_encoder_path = "PixArt-alpha/PixArt-XL-2-1024-MS"
+                
+            else:
+                # Local file path
+                ckpt_path = Path(model_path)
+                if not ckpt_path.exists():
+                    # Try to find in ComfyUI models directory
+                    comfyui_base = Path(__file__).parent.parent.parent
+                    checkpoint_dir = comfyui_base / "models" / "checkpoints"
+                    ckpt_path = checkpoint_dir / "ltxv-13b-0.9.8-distilled.safetensors"
+                    
+                    if not ckpt_path.exists():
+                        raise FileNotFoundError(
+                            f"LTX-Video checkpoint not found.\n\n"
+                            f"Tried locations:\n"
+                            f"1. {model_path}\n"
+                            f"2. {ckpt_path}\n\n"
+                            "Solutions:\n"
+                            "• Set model_path to 'Lightricks/LTX-Video' to auto-download\n"
+                            "• Or download manually and place in ComfyUI/models/checkpoints/\n"
+                            "• Or provide full path to the .safetensors file"
+                        )
+                
+                print(f"[LTX-Video] Using local checkpoint: {ckpt_path}")
+                text_encoder_path = "PixArt-alpha/PixArt-XL-2-1024-MS"
+            
+            # Load checkpoint metadata
+            print("[LTX-Video] Loading checkpoint metadata...")
+            with safe_open(ckpt_path, framework="pt") as f:
+                metadata = f.metadata()
+                config_str = metadata.get("config")
+                if config_str:
+                    configs = json.loads(config_str)
+                    allowed_inference_steps = configs.get("allowed_inference_steps", None)
+                else:
+                    allowed_inference_steps = None
+            
+            # Load models
+            print("[LTX-Video] Loading VAE...")
+            vae = CausalVideoAutoencoder.from_pretrained(ckpt_path)
+            
+            print("[LTX-Video] Loading transformer...")
+            # Use bfloat16 precision for compatibility (load directly in bfloat16 to save memory)
+            transformer = Transformer3DModel.from_pretrained(ckpt_path, torch_dtype=torch.bfloat16)
+            
+            print("[LTX-Video] Loading scheduler...")
+            scheduler = RectifiedFlowScheduler.from_pretrained(ckpt_path)
+            
+            print("[LTX-Video] Loading text encoder and tokenizer...")
+            print(f"[LTX-Video] Text encoder will be downloaded from: {text_encoder_path}")
+            print("[LTX-Video] This includes T5-XXL model (~4.7GB) - first run may take time")
+            
+            try:
+                # Load T5 text encoder and tokenizer from PixArt model
+                # PixArt-alpha/PixArt-XL-2-1024-MS contains T5-XXL in subfolder structure
+                # Using modern transformers API with automatic download
+                text_encoder = T5EncoderModel.from_pretrained(
+                    text_encoder_path, 
+                    subfolder="text_encoder",
+                    torch_dtype=torch.bfloat16,
+                    resume_download=True,  # Resume if interrupted
+                    local_files_only=False,  # Allow downloads
+                )
+                
+                tokenizer = T5Tokenizer.from_pretrained(
+                    text_encoder_path, 
+                    subfolder="tokenizer",
+                    resume_download=True,
+                    local_files_only=False,
+                )
+                print("[LTX-Video] ✅ Text encoder and tokenizer loaded successfully")
+                
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to load T5 text encoder: {e}\n\n"
+                    "The T5-XXL text encoder is required for LTX-Video.\n\n"
+                    "Solutions:\n"
+                    "1. Ensure you have internet connection (first run downloads ~4.7GB)\n"
+                    "2. Install required packages:\n"
+                    "   pip install -U transformers sentencepiece huggingface-hub\n"
+                    "3. The model auto-downloads from: huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS\n\n"
+                    "For manual pre-download using Python:\n"
+                    "  from huggingface_hub import snapshot_download\n"
+                    "  snapshot_download('PixArt-alpha/PixArt-XL-2-1024-MS')\n\n"
+                    f"Error details: {str(e)}"
                 )
             
-            # TODO: Implement full pipeline loading
-            # This requires loading the checkpoint, VAE, transformer, text encoder, etc.
-            # For reference implementation, see ltx_video/inference.py load_model()
-            raise NotImplementedError(
-                "Pipeline loading implementation pending.\n\n"
-                "The node infrastructure is complete but pipeline loading requires:\n"
-                "1. Loading the checkpoint from safetensors\n"
-                "2. Initializing VAE, transformer, text encoder, scheduler\n"
-                "3. Assembling components into LTXVideoPipeline\n\n"
-                "See ltx_video/inference.py load_model() for reference implementation."
-            )
+            # Create patchifier
+            patchifier = SymmetricPatchifier(patch_size=1)
             
+            # Move models to device and convert to bfloat16 in single operation (memory efficient)
+            print(f"[LTX-Video] Moving models to device: {self.device}")
+            transformer = transformer.to(device=self.device, dtype=torch.bfloat16)
+            vae = vae.to(device=self.device, dtype=torch.bfloat16)
+            text_encoder = text_encoder.to(device=self.device, dtype=torch.bfloat16)
+            
+            # Assemble pipeline (without prompt enhancers for simplicity)
+            submodel_dict = {
+                "transformer": transformer,
+                "patchifier": patchifier,
+                "text_encoder": text_encoder,
+                "tokenizer": tokenizer,
+                "scheduler": scheduler,
+                "vae": vae,
+                "prompt_enhancer_image_caption_model": None,
+                "prompt_enhancer_image_caption_processor": None,
+                "prompt_enhancer_llm_model": None,
+                "prompt_enhancer_llm_tokenizer": None,
+                "allowed_inference_steps": allowed_inference_steps,
+            }
+            
+            print("[LTX-Video] Assembling pipeline...")
+            pipeline = LTXVideoPipeline(**submodel_dict)
+            pipeline = pipeline.to(self.device)
+            
+            print("[LTX-Video] ✅ Pipeline loaded successfully!")
+            print(f"[LTX-Video] Device: {self.device}")
+            print(f"[LTX-Video] Precision: bfloat16")
+            return pipeline
+            
+        except ImportError as e:
+            print(f"[LTX-Video] Import error: {e}")
+            raise RuntimeError(
+                f"Failed to import required modules: {e}\n\n"
+                "Please ensure all dependencies are installed:\n"
+                "  pip install torch transformers sentencepiece safetensors diffusers\n"
+                "  pip install -e .[inference]"
+            )
         except Exception as e:
             print(f"[LTX-Video] Error loading pipeline: {e}")
+            import traceback
+            traceback.print_exc()
             raise
 
 
