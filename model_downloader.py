@@ -22,9 +22,9 @@ def get_comfyui_models_dir():
 
 
 def download_model(model_config: Dict, models_dir: Path) -> bool:
-    """Download a single model using huggingface_hub"""
+    """Download a single model using modern huggingface_hub API"""
     try:
-        from huggingface_hub import hf_hub_download
+        from huggingface_hub import hf_hub_download, HfFolder
 
         target_dir = models_dir / model_config["path"]
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -47,19 +47,28 @@ def download_model(model_config: Dict, models_dir: Path) -> bool:
                 file_parts[1] if len(file_parts) > 1 else model_config["filename"]
             )
 
-            # Download using hf_hub_download
+            # Check for authentication token (optional for public models)
+            token = HfFolder.get_token()
+            if token:
+                print("  Using HuggingFace authentication token")
+
+            # Download using modern hf_hub_download API
             downloaded_path = hf_hub_download(
                 repo_id=repo_id,
                 filename=filename,
                 revision=branch,
                 cache_dir=None,
                 force_download=False,
+                resume_download=True,  # Resume interrupted downloads
+                local_files_only=False,  # Allow network access
+                token=token,  # Use token if available
             )
 
             # Copy to target location if different
             if Path(downloaded_path) != target_file:
                 import shutil
 
+                print(f"  Copying to final location...")
                 shutil.copy2(downloaded_path, target_file)
 
             print(f"  ✓ Downloaded successfully to {target_file}")
@@ -70,10 +79,12 @@ def download_model(model_config: Dict, models_dir: Path) -> bool:
 
     except ImportError:
         print("  ✗ Error: huggingface_hub not installed")
-        print("    Install with: pip install huggingface_hub")
+        print("    Install with: pip install -U huggingface-hub")
         return False
     except Exception as e:
         print(f"  ✗ Error downloading: {e}")
+        print("  Tip: Ensure you have internet access and sufficient disk space")
+        print("  For authentication issues, run: from huggingface_hub import login; login()")
         return False
 
 
