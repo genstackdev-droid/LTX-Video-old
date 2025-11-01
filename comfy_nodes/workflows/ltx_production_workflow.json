@@ -1,0 +1,148 @@
+{
+  "last_node_id": 10,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LTXVFullPipeline",
+      "pos": [300, 100],
+      "size": [400, 500],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "frames",
+          "type": "IMAGE",
+          "links": [1],
+          "slot_index": 0
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVFullPipeline"
+      },
+      "widgets_values": [
+        "A serene lake at sunset with mountains in the background, cinematic lighting",
+        "8s",
+        "1080p",
+        "Basic",
+        60,
+        8.0,
+        -1,
+        "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames",
+        "Lightricks/LTX-Video"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "VHS_VideoCombine",
+      "pos": [800, 100],
+      "size": [300, 200],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "widgets_values": {
+        "frame_rate": 25,
+        "loop_count": 0,
+        "filename_prefix": "LTXVideo",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "filename": "LTXVideo_00001.mp4",
+            "subfolder": "",
+            "type": "output",
+            "format": "video/h264-mp4"
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "LTXVPromptEnhancer",
+      "pos": [-100, 100],
+      "size": [350, 150],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "enhanced_prompt",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVPromptEnhancer"
+      },
+      "widgets_values": [
+        "A cat walking in a garden",
+        "Moderate",
+        "Realistic"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Note",
+      "pos": [-100, 300],
+      "size": [350, 200],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "LTX-Video Production Workflow v2.0\n\nFeatures:\n- Auto-prompt enhancement for realism\n- 8-10 second video generation\n- 1080p/4K output support\n- Temporal consistency optimization\n- VRAM efficient (12GB+ supported)\n\nUsage:\n1. Enter your prompt in the Full Pipeline node\n2. Select duration (8s or 10s)\n3. Choose resolution (720p, 1080p, or 4K)\n4. Set prompt mode (Basic for auto-enhancement)\n5. Adjust steps and CFG scale if needed\n6. Queue the prompt!\n\nOptional:\n- Use Prompt Enhancer node for manual enhancement\n- Connect output to upscaler for further quality boost"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
