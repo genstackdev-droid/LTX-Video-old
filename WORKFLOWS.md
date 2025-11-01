@@ -1,6 +1,6 @@
 # LTX-Video ComfyUI Workflows Guide
 
-**Updated: November 2024** - All workflows tested and fully connected
+**Updated: November 2024** - All workflows tested, optimized, and fully connected ✅
 
 ## 🚀 Quick Start
 
@@ -35,11 +35,12 @@ All workflow files are located in the `workflows/` directory and are ready to dr
 Prompt Enhancer → Full Pipeline → Video Combine
 ```
 
-**Default Settings**:
+**Default Settings** (Optimized November 2024):
 - Duration: 10 seconds
 - Resolution: 1080p
 - Quality: Standard
-- Steps: 80 (balanced speed/quality)
+- Steps: 60 (optimized for speed - 25% faster!)
+- Prompt Mode: Basic (auto-enhancement)
 - Sampler: DPM++ 3M SDE Karras
 - Output: H.264 MP4, CRF 20
 
@@ -73,14 +74,15 @@ Prompt Enhancer → Full Pipeline → Video Combine
 Prompt Enhancer → Full Pipeline (Ultra) → Video Combine
 ```
 
-**Default Settings**:
+**Default Settings** (Optimized November 2024):
 - Duration: 10 seconds
 - Resolution: 4K (3840×2160)
 - Quality: Ultra
 - Steps: 120 (maximum quality)
+- Prompt Mode: Detailed (for pre-enhanced prompts)
 - CFG Scale: 10.0
 - Sampler: DPM++ 3M SDE Karras
-- Output: H.264 MP4, CRF 19 (very high quality)
+- Output: H.264 MP4, CRF 18 (production quality)
 
 **System Requirements**:
 - GPU: NVIDIA H100/H200 (80GB) or RTX 6000 Ada (48GB)
@@ -110,8 +112,9 @@ Prompt Enhancer → Full Pipeline (Ultra) → Video Combine
 Prompt Enhancer → Full Pipeline → Frame Interpolator → Upscaler → Video Combine
 ```
 
-**Default Settings**:
+**Default Settings** (Verified Optimal November 2024):
 - Base Generation: 1080p
+- Prompt Mode: Detailed (for pre-enhanced prompts)
 - Frame Rate: 25 FPS
 - Upscale Factor: 2x (→ 4K)
 - Steps: 80
