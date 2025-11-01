@@ -150,8 +150,10 @@ If automatic download fails, download manually from HuggingFace:
 
 ## 📚 Additional Documentation
 
-- [Installation Guide](comfy_nodes/INSTALL.md) - Detailed installation instructions
-- [Quick Reference](comfy_nodes/QUICK_REFERENCE.md) - Node parameters and workflows
+- [Installation Guide](docs/INSTALL.md) - Detailed installation instructions
+- [Quick Reference](docs/QUICK_REFERENCE.md) - Node parameters and workflows
+- [ComfyUI Documentation](docs/README_COMFYUI.md) - Complete ComfyUI integration guide
+- [Workflows](workflows/) - Example workflow JSON files
 - [Original README](README_ORIGINAL.md) - LTX-Video project information
 
 ## 🔗 Links
