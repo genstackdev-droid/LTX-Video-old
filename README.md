@@ -60,7 +60,7 @@ Models will download automatically when you first use the node. If you want to d
 python -c "from model_downloader import download_all_models; download_all_models()"
 
 # Method 2: Using huggingface-cli
-cd ComfyUI/models
+cd /ComfyUI/models
 
 # Download LTX-Video core model
 huggingface-cli download Lightricks/LTX-Video ltxv-13b-0.9.8-distilled.safetensors --local-dir checkpoints/
