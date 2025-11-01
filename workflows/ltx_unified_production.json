@@ -62,7 +62,8 @@
         -1,
         "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames, low resolution",
         "Lightricks/LTX-Video",
-        "DPM++ 3M SDE Karras"
+        "DPM++ 3M SDE Karras",
+        25
       ]
     },
     {

@@ -102,10 +102,14 @@ def test_node_input_types():
     assert "cfg_scale" in input_types["required"]
     assert "seed" in input_types["required"]
     
+    # fps should NOT be in required (moved to optional for backward compatibility)
+    assert "fps" not in input_types["required"]
+    
     # Check optional inputs
     assert "optional" in input_types
     assert "negative_prompt" in input_types["optional"]
     assert "model_path" in input_types["optional"]
+    assert "fps" in input_types["optional"]
     
     print("✓ Node input types are correctly defined")
 
