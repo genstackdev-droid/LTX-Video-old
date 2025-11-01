@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "LTXVPromptEnhancer",
-      "pos": [
-        50,
-        100
-      ],
-      "size": [
-        350,
-        150
-      ],
+      "pos": [50, 100],
+      "size": [350, 150],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -20,9 +14,7 @@
         {
           "name": "enhanced_prompt",
           "type": "STRING",
-          "links": [
-            1
-          ]
+          "links": [1]
         }
       ],
       "properties": {},
@@ -35,14 +27,8 @@
     {
       "id": 2,
       "type": "LTXVFullPipeline",
-      "pos": [
-        450,
-        100
-      ],
-      "size": [
-        400,
-        500
-      ],
+      "pos": [450, 100],
+      "size": [400, 500],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -57,9 +43,7 @@
         {
           "name": "frames",
           "type": "IMAGE",
-          "links": [
-            2
-          ]
+          "links": [2]
         }
       ],
       "properties": {},
@@ -78,14 +62,8 @@
     {
       "id": 3,
       "type": "LTXVFrameInterpolator",
-      "pos": [
-        900,
-        100
-      ],
-      "size": [
-        300,
-        150
-      ],
+      "pos": [900, 100],
+      "size": [300, 150],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -100,9 +78,7 @@
         {
           "name": "frames",
           "type": "IMAGE",
-          "links": [
-            3
-          ]
+          "links": [3]
         },
         {
           "name": "frame_count",
@@ -119,14 +95,8 @@
     {
       "id": 4,
       "type": "LTXVUpscaler",
-      "pos": [
-        900,
-        300
-      ],
-      "size": [
-        300,
-        180
-      ],
+      "pos": [900, 300],
+      "size": [300, 180],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -141,9 +111,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            4
-          ]
+          "links": [4]
         }
       ],
       "properties": {},
@@ -156,14 +124,8 @@
     {
       "id": 5,
       "type": "VHS_VideoCombine",
-      "pos": [
-        1250,
-        200
-      ],
-      "size": [
-        300,
-        200
-      ],
+      "pos": [1250, 200],
+      "size": [300, 200],
       "flags": {},
       "order": 4,
       "mode": 0,
@@ -189,58 +151,24 @@
     {
       "id": 6,
       "type": "Note",
-      "pos": [
-        50,
-        300
-      ],
-      "size": [
-        350,
-        300
-      ],
+      "pos": [50, 300],
+      "size": [350, 300],
       "flags": {},
       "order": 0,
       "mode": 0,
       "properties": {},
       "widgets_values": [
-        "Advanced LTX-Video Workflow v2.0.2\n\n\ud83d\udd27 Complete Modular Pipeline (All Nodes Connected)\n\nWorkflow Flow:\n1. Prompt Enhancer \u2192 Enhances your prompt\n2. Full Pipeline \u2192 Generates base video\n3. Frame Interpolator \u2192 Extends duration\n4. Upscaler \u2192 Increases resolution to 4K\n5. Video Combine \u2192 Final MP4 output\n\nNode Details:\n\n1\ufe0f\u20e3 Prompt Enhancer:\n   - Automatically enhances basic prompts\n   - Enhancement levels: Minimal/Moderate/Maximum\n   - Style presets: Realistic/Cinematic/Artistic\n   - Adds temporal consistency keywords\n\n2\ufe0f\u20e3 Full Pipeline:\n   - Main generation node with all controls\n   - 'Detailed' mode for pre-enhanced prompts\n   - 10s duration for longer clips\n   - Higher steps (80+) for maximum quality\n   - Model auto-loads from HuggingFace\n\n3\ufe0f\u20e3 Frame Interpolator:\n   - Extends video duration smoothly\n   - 25 FPS target for smooth playback\n   - Maintains temporal consistency\n   - Linear interpolation (upgradeable to RIFE)\n\n4\ufe0f\u20e3 Upscaler:\n   - 4K upscaling with 2x scale factor\n   - Tiled processing for VRAM efficiency\n   - Bicubic interpolation (upgradeable to ESRGAN)\n   - Handles large frames efficiently\n\n5\ufe0f\u20e3 Video Output:\n   - Combines frames into H.264 MP4\n   - CRF 18 for high quality (lower = better)\n   - 25 FPS matches interpolator\n   - Metadata embedded automatically\n\n\u2705 All nodes connected - Drag, drop, and run!\n\ud83d\udcc5 Updated: November 2024"
+        "Advanced LTX-Video Workflow\n\nThis workflow demonstrates modular usage:\n\n1. Prompt Enhancer:\n   - Automatically enhances your prompt\n   - Choose enhancement level and style\n   - Maximum level adds professional keywords\n\n2. Full Pipeline:\n   - Main generation node\n   - Set to 'Detailed' mode for pre-enhanced prompts\n   - 10s duration for longer clips\n   - Higher steps (80) for maximum quality\n\n3. Frame Interpolator:\n   - Extends duration by interpolating frames\n   - Maintains temporal consistency\n   - Can upgrade to RIFE for better quality\n\n4. Upscaler:\n   - 4K upscaling with tiled processing\n   - VRAM-efficient\n   - Can upgrade to ESRGAN for sharpness\n\n5. Video Output:\n   - Combines frames into final video\n   - Lower CRF (18) for higher quality\n   - 25 FPS for smooth playback"
       ],
       "color": "#432",
       "bgcolor": "#653"
     }
   ],
   "links": [
-    [
-      1,
-      1,
-      0,
-      2,
-      0,
-      "STRING"
-    ],
-    [
-      2,
-      2,
-      0,
-      3,
-      0,
-      "IMAGE"
-    ],
-    [
-      3,
-      3,
-      0,
-      4,
-      0,
-      "IMAGE"
-    ],
-    [
-      4,
-      4,
-      0,
-      5,
-      0,
-      "IMAGE"
-    ]
+    [1, 1, 0, 2, 0, "STRING"],
+    [2, 2, 0, 3, 0, "IMAGE"],
+    [3, 3, 0, 4, 0, "IMAGE"],
+    [4, 4, 0, 5, 0, "IMAGE"]
   ],
   "groups": [],
   "config": {},
