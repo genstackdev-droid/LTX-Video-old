@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ltx-video"
-version = "0.1.2"
-description = "A package for LTX-Video model"
+version = "2.0.0"
+description = "LTX-Video with Production-Ready ComfyUI Custom Nodes"
 authors = [
     { name = "LTX-Video Team", email = "ltx-video@lightricks.com" }
 ]
@@ -36,7 +36,7 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["ltx_video*"]
+include = ["ltx_video*", "comfy_nodes*"]
 
 [tool.setuptools.package-data]
 ltx_video = ["configs/*.yaml"]
