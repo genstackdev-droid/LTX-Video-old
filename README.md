@@ -135,6 +135,55 @@ If automatic download fails, download manually from HuggingFace:
 4. **LTX-Video 4K Upscaler** - Intelligent resolution upscaling
 5. **LTX-Video Advanced Sampler** - Fine-grained generation control
 
+## 🎨 Pre-Built Workflows
+
+Ready-to-use workflow files in the `workflows/` directory:
+
+### 1. **ltx_simple_quickstart.json** ⭐ RECOMMENDED FOR BEGINNERS
+**Perfect for first-time users!**
+- ✅ Minimal setup - just enter prompt and click Queue
+- ✅ All nodes pre-connected and ready
+- ✅ Includes helpful documentation in the workflow
+- **Nodes**: Prompt Enhancer → Full Pipeline → Video Output
+- **Quality**: Standard (1080p, 80 steps)
+- **Speed**: Fast generation (~2-3 minutes on RTX 4090)
+
+### 2. **ltx_unified_production.json**
+**Professional production workflow**
+- ✅ Fixed and fully connected (November 2024)
+- ✅ Prompt enhancer properly linked
+- Ultra quality mode with 4K output
+- 120 steps for maximum detail
+- **Nodes**: Prompt Enhancer → Full Pipeline → Video Output
+- **Quality**: Ultra (4K, 120 steps)
+- **Speed**: Slower but highest quality (~4-5 minutes on H100)
+
+### 3. **ltx_advanced_modular.json**
+**Complete modular pipeline**
+- ✅ All enhancement nodes connected
+- Frame interpolation for extended duration
+- 4K upscaling with tiled processing
+- Full post-processing pipeline
+- **Nodes**: Prompt Enhancer → Full Pipeline → Interpolator → Upscaler → Video Output
+- **Quality**: High (1080p→4K upscaled, 80 steps)
+- **Speed**: Moderate (~3-4 minutes on RTX 4090)
+
+### How to Load Workflows
+
+In ComfyUI:
+1. Click the **"Load"** button (folder icon)
+2. Navigate to `custom_nodes/LTX-Video-old/workflows/`
+3. Select any workflow JSON file
+4. **Edit the prompt** in the Prompt Enhancer node
+5. Click **"Queue Prompt"** to generate!
+
+All workflows include:
+- ✅ Model selection (HuggingFace path configurable)
+- ✅ Sampler selection (DPM++ 3M SDE Karras default)
+- ✅ All nodes properly connected
+- ✅ Built-in documentation notes
+- ✅ Optimized for November 2024 / 2025 standards
+
 ## 🛠️ Troubleshooting
 
 ### Node Not Appearing
