@@ -98,7 +98,8 @@
         -1,
         "blurry, low quality, distorted, watermark, text",
         "Lightricks/LTX-Video",
-        "DPM++ 3M SDE Karras"
+        "DPM++ 3M SDE Karras",
+        25
       ],
       "color": "#322",
       "bgcolor": "#533"
@@ -175,7 +176,7 @@
         "text": ""
       },
       "widgets_values": [
-        "🚀 LTX-Video QUICKSTART Workflow\n📅 Updated: November 2024 (Latest)\n\n✅ READY TO USE - Just hit Queue!\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📝 HOW TO USE:\n\n1️⃣ Enter Your Prompt\n   → Type in the Prompt Enhancer node\n   → Example: \"A cat walking in a garden\"\n\n2️⃣ Choose Settings (Optional)\n   → Enhancement: Moderate (recommended)\n   → Style: Realistic/Cinematic/Artistic\n\n3️⃣ Adjust Quality (Optional)\n   → Duration: 10s (longer video)\n   → Resolution: 1080p (standard) or 4K\n   → Quality: Standard (fast) or Ultra\n   → Steps: 80 (default, increase for better)\n\n4️⃣ Click \"Queue Prompt\" Button!\n   → First run downloads models (~18GB)\n   → Generation takes 2-5 minutes\n   → Output saved in ComfyUI/output/\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🎯 MODEL SELECTION:\n   Model path in Full Pipeline node\n   Default: \"Lightricks/LTX-Video\"\n   Auto-downloads from HuggingFace\n\n🎨 SAMPLER SELECTION:\n   Dropdown in Full Pipeline node\n   Default: DPM++ 3M SDE Karras (best)\n   Options: DPM++ 2M Karras, Euler, DDIM\n\n✅ All nodes connected and ready!\n💡 Green nodes = active and working"
+        "\ud83d\ude80 LTX-Video QUICKSTART Workflow\n\ud83d\udcc5 Updated: November 2024 (Latest)\n\n\u2705 READY TO USE - Just hit Queue!\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\ud83d\udcdd HOW TO USE:\n\n1\ufe0f\u20e3 Enter Your Prompt\n   \u2192 Type in the Prompt Enhancer node\n   \u2192 Example: \"A cat walking in a garden\"\n\n2\ufe0f\u20e3 Choose Settings (Optional)\n   \u2192 Enhancement: Moderate (recommended)\n   \u2192 Style: Realistic/Cinematic/Artistic\n\n3\ufe0f\u20e3 Adjust Quality (Optional)\n   \u2192 Duration: 10s (longer video)\n   \u2192 Resolution: 1080p (standard) or 4K\n   \u2192 Quality: Standard (fast) or Ultra\n   \u2192 Steps: 80 (default, increase for better)\n\n4\ufe0f\u20e3 Click \"Queue Prompt\" Button!\n   \u2192 First run downloads models (~18GB)\n   \u2192 Generation takes 2-5 minutes\n   \u2192 Output saved in ComfyUI/output/\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\ud83c\udfaf MODEL SELECTION:\n   Model path in Full Pipeline node\n   Default: \"Lightricks/LTX-Video\"\n   Auto-downloads from HuggingFace\n\n\ud83c\udfa8 SAMPLER SELECTION:\n   Dropdown in Full Pipeline node\n   Default: DPM++ 3M SDE Karras (best)\n   Options: DPM++ 2M Karras, Euler, DDIM\n\n\u2705 All nodes connected and ready!\n\ud83d\udca1 Green nodes = active and working"
       ],
       "color": "#432",
       "bgcolor": "#653"

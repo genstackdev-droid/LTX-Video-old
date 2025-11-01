@@ -65,7 +65,6 @@ class LTXVFullPipeline:
                     {"default": 10.0, "min": 1.0, "max": 20.0, "step": 0.5},
                 ),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 0x7FFFFFFFFFFFFFFF}),
-                "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
             },
             "optional": {
                 "negative_prompt": (
@@ -75,6 +74,7 @@ class LTXVFullPipeline:
                         "default": "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames, low resolution",
                     },
                 ),
+                "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
                 "model_path": ("STRING", {"default": "Lightricks/LTX-Video"}),
                 "sampler_name": (
                     ["DPM++ 3M SDE Karras", "DPM++ 2M Karras", "Euler", "DDIM"],
@@ -231,10 +231,10 @@ class LTXVFullPipeline:
         steps,
         cfg_scale,
         seed,
-        fps,
         negative_prompt="",
         model_path="Lightricks/LTX-Video",
         sampler_name="DPM++ 3M SDE Karras",
+        fps=25,
     ):
         """
         Main video generation function
