@@ -109,9 +109,17 @@ def test_node_input_types():
     assert "optional" in input_types
     assert "negative_prompt" in input_types["optional"]
     assert "model_path" in input_types["optional"]
+    assert "sampler_name" in input_types["optional"]
     assert "fps" in input_types["optional"]
     
+    # Verify parameter order (critical for ComfyUI workflow compatibility)
+    # The order must match workflow serialization: negative_prompt, model_path, sampler_name, fps
+    optional_keys = list(input_types["optional"].keys())
+    expected_order = ["negative_prompt", "model_path", "sampler_name", "fps"]
+    assert optional_keys == expected_order, f"Optional parameter order mismatch. Expected {expected_order}, got {optional_keys}"
+    
     print("✓ Node input types are correctly defined")
+    print("✓ Optional parameter order is correct for workflow compatibility")
 
 
 if __name__ == "__main__":
