@@ -791,6 +791,7 @@ class LTXVideoPipeline(DiffusionPipeline):
         stochastic_sampling: bool = False,
         media_items: Optional[torch.Tensor] = None,
         tone_map_compression_ratio: float = 0.0,
+        vae_decode_batch_size: int = 2,
         **kwargs,
     ) -> Union[ImagePipelineOutput, Tuple]:
         """
@@ -874,6 +875,9 @@ class LTXVideoPipeline(DiffusionPipeline):
                 The input media item used for image-to-image / video-to-video.
             tone_map_compression_ratio: compression ratio for tone mapping, defaults to 0.0.
                         If set to 0.0, no tone mapping is applied. If set to 1.0 - full compression is applied.
+            vae_decode_batch_size (`int`, *optional*, defaults to `2`):
+                The batch size to use for VAE decoding. Larger values are faster but use more memory.
+                Reduce this value if you encounter out-of-memory errors during video generation.
         Examples:
 
         Returns:
@@ -1328,6 +1332,7 @@ class LTXVideoPipeline(DiffusionPipeline):
                 latents,
                 self.vae,
                 is_video,
+                split_size=vae_decode_batch_size,
                 vae_per_channel_normalize=kwargs["vae_per_channel_normalize"],
                 timestep=decode_timestep,
             )

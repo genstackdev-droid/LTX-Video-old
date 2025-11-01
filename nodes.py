@@ -80,6 +80,16 @@ class LTXVFullPipeline:
                     {"default": "DPM++ 3M SDE Karras"},
                 ),
                 "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
+                "vae_decode_batch_size": (
+                    "INT",
+                    {
+                        "default": 2,
+                        "min": 1,
+                        "max": 8,
+                        "step": 1,
+                        "tooltip": "Batch size for VAE decoding. Lower values use less VRAM but are slower. Reduce to 1 if you get out-of-memory errors.",
+                    },
+                ),
             },
         }
 
@@ -235,6 +245,7 @@ class LTXVFullPipeline:
         model_path="Lightricks/LTX-Video",
         sampler_name="DPM++ 3M SDE Karras",
         fps=25,
+        vae_decode_batch_size=2,
     ):
         """
         Main video generation function
@@ -340,6 +351,7 @@ class LTXVFullPipeline:
                     frame_rate=float(base_fps),  # Use base_fps for generation
                     generator=torch.Generator(device=self.device).manual_seed(seed),
                     vae_per_channel_normalize=True,  # Enable VAE normalization
+                    vae_decode_batch_size=vae_decode_batch_size,
                 )
             else:
                 print(f"[LTX-Video] Using num_inference_steps: {optimized_steps}")
@@ -354,6 +366,7 @@ class LTXVFullPipeline:
                     frame_rate=float(base_fps),  # Use base_fps for generation
                     generator=torch.Generator(device=self.device).manual_seed(seed),
                     vae_per_channel_normalize=True,  # Enable VAE normalization
+                    vae_decode_batch_size=vae_decode_batch_size,
                 )
 
             # Extract frames

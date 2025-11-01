@@ -203,9 +203,12 @@ All workflows include:
 - Check ComfyUI console for error messages
 
 ### Out of Memory Errors
+- **Reduce VAE decode batch size** (set `vae_decode_batch_size` to 1 in optional parameters)
 - Reduce resolution (use 720p instead of 1080p/4K)
 - Reduce number of inference steps
 - Close other GPU applications
+
+The `vae_decode_batch_size` parameter controls how the video decoder processes frames. Lower values use less memory but are slightly slower. If you encounter "Allocation on device" errors, try reducing this value from the default of 2 to 1.
 
 ### Models Not Loading
 - Verify models are in correct directories

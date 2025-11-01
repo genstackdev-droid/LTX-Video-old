@@ -348,6 +348,10 @@ class InferenceConfig:
     offload_to_cpu: bool = field(
         default=False, metadata={"help": "Offloading unnecessary computations to CPU."}
     )
+    vae_decode_batch_size: int = field(
+        default=2,
+        metadata={"help": "Batch size for VAE decoding. Lower values use less VRAM but are slower. Reduce to 1 if you get out-of-memory errors."},
+    )
     negative_prompt: str = field(
         default="worst quality, inconsistent motion, blurry, jittery, distorted",
         metadata={"help": "Negative prompt for undesired features"},
@@ -581,6 +585,7 @@ def infer(config: InferenceConfig):
         conditioning_items=conditioning_items,
         is_video=True,
         vae_per_channel_normalize=True,
+        vae_decode_batch_size=config.vae_decode_batch_size,
         image_cond_noise_scale=config.image_cond_noise_scale,
         mixed_precision=(precision == "mixed_precision"),
         offload_to_cpu=offload_to_cpu,
