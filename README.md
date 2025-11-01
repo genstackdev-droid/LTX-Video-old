@@ -41,11 +41,13 @@ Restart ComfyUI and look for "LTX-Video" nodes in the node browser.
 
 Models will automatically download on first use. Total size: ~18GB.
 
-| Model | Size | Install Path | Download Command |
-|-------|------|--------------|------------------|
-| **LTX-Video Core** | ~13GB | `ComfyUI/models/checkpoints/` | See below |
-| **Text Encoder (T5-XXL)** | ~4.7GB | `ComfyUI/models/clip/` | See below |
-| **VAE** | ~335MB | `ComfyUI/models/vae/` | See below |
+**📖 [Complete Models Download Guide](MODELS.md)** - Detailed instructions for all download methods
+
+| Model | Size | Install Path |
+|-------|------|--------------|
+| **LTX-Video Core** | ~13GB | `ComfyUI/models/checkpoints/` |
+| **Text Encoder (T5-XXL)** | ~4.7GB | `ComfyUI/models/clip/` |
+| **VAE** | ~335MB | `ComfyUI/models/vae/` |
 
 ### Automatic Download
 
@@ -162,6 +164,27 @@ If automatic download fails, download manually from HuggingFace:
 - [HuggingFace Model](https://huggingface.co/Lightricks/LTX-Video)
 - [Research Paper](https://arxiv.org/abs/2501.00103)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+
+## 🎬 Complete Setup Summary
+
+Here's the complete setup in one go:
+
+```bash
+# 1. Clone the repository into ComfyUI custom_nodes
+cd ComfyUI/custom_nodes/
+git clone https://github.com/genstackdev-droid/LTX-Video-old
+cd LTX-Video-old
+
+# 2. Install dependencies
+pip install -r requirements_comfyui.txt
+
+# 3. Download models (automatic)
+python -c "from model_downloader import download_all_models; download_all_models()"
+
+# 4. Restart ComfyUI and start generating!
+```
+
+**Or** let models auto-download on first use - just skip step 3 and use the node!
 
 ## 📄 License
 

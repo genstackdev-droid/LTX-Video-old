@@ -22,7 +22,7 @@ This ComfyUI custom node delivers **LTX v2-level hyper-realistic text-to-video g
 cd /path/to/ComfyUI/custom_nodes/
 git clone https://github.com/genstackdev-droid/LTX-Video-old
 cd LTX-Video-old
-pip install -r comfy_nodes/requirements.txt
+pip install -r requirements_comfyui.txt
 ```
 
 ### Method 2: Manual Installation
@@ -32,7 +32,7 @@ pip install -r comfy_nodes/requirements.txt
 3. Install dependencies:
    ```bash
    cd ComfyUI/custom_nodes/LTX-Video-old
-   pip install -r comfy_nodes/requirements.txt
+   pip install -r requirements_comfyui.txt
    ```
 
 ### Method 3: Development Mode
@@ -69,7 +69,7 @@ Models will **automatically download** on first run. Total size: ~18GB.
 **Manual Download** (if auto-download fails):
 ```bash
 # From ComfyUI root directory
-python -c "from comfy_nodes.model_downloader import download_all_models; download_all_models()"
+python -c "from model_downloader import download_all_models; download_all_models()"
 ```
 
 Or download manually and place in the paths shown above.
@@ -78,7 +78,7 @@ Or download manually and place in the paths shown above.
 
 ### Basic Usage
 
-1. **Load Workflow**: Import `comfy_nodes/workflows/ltx_production_workflow.json`
+1. **Load Workflow**: Import `workflows/ltx_production_workflow.json`
 2. **Enter Prompt**: Type your video description in the Full Pipeline node
 3. **Select Settings**:
    - Duration: 8s or 10s
@@ -402,7 +402,7 @@ Enable Temporal Layers: Full
 
 ### Workflow Usage for Enterprise
 
-1. **Load**: `comfy_nodes/workflows/ltx_unified_production.json`
+1. **Load**: `workflows/ltx_unified_production.json`
 2. **Verify Settings**:
    - Quality Mode: Ultra ✓
    - Resolution: 4K ✓

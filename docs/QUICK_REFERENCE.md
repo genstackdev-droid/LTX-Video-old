@@ -8,7 +8,7 @@ Fast reference guide for common tasks and settings.
 cd ComfyUI/custom_nodes
 git clone https://github.com/genstackdev-droid/LTX-Video-old
 cd LTX-Video-old
-pip install -r comfy_nodes/requirements.txt
+pip install -r requirements_comfyui.txt
 # Restart ComfyUI
 ```
 
@@ -326,10 +326,10 @@ artifacts, duplicate frames, stuttering, compression artifacts
 
 ## 🔗 Quick Links
 
-- **Full Documentation**: `comfy_nodes/README_COMFYUI.md`
-- **Installation Guide**: `comfy_nodes/INSTALL.md`
+- **Full Documentation**: `docs/README_COMFYUI.md`
+- **Installation Guide**: `docs/INSTALL.md`
 - **Changelog**: `CHANGELOG.md`
-- **Workflows**: `comfy_nodes/workflows/`
+- **Workflows**: `workflows/`
 - **Issues**: GitHub Issues page
 - **Discord**: https://discord.gg/ltxplatform
 
