@@ -55,13 +55,14 @@ class LTXVFullPipeline:
                         "default": "A serene lake at sunset with mountains in the background, cinematic lighting",
                     },
                 ),
-                "duration": (["8s", "10s"], {"default": "8s"}),
-                "resolution": (["720p", "1080p", "4K"], {"default": "1080p"}),
+                "duration": (["8s", "10s"], {"default": "10s"}),
+                "resolution": (["720p", "1080p", "4K"], {"default": "4K"}),
                 "prompt_mode": (["Basic", "Detailed"], {"default": "Basic"}),
-                "steps": ("INT", {"default": 60, "min": 20, "max": 100, "step": 1}),
+                "quality_mode": (["Standard", "Ultra"], {"default": "Ultra"}),
+                "steps": ("INT", {"default": 120, "min": 20, "max": 200, "step": 1}),
                 "cfg_scale": (
                     "FLOAT",
-                    {"default": 8.0, "min": 1.0, "max": 20.0, "step": 0.5},
+                    {"default": 10.0, "min": 1.0, "max": 20.0, "step": 0.5},
                 ),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 0xFFFFFFFFFFFFFFFF}),
             },
@@ -70,10 +71,14 @@ class LTXVFullPipeline:
                     "STRING",
                     {
                         "multiline": True,
-                        "default": "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames",
+                        "default": "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames, low resolution",
                     },
                 ),
                 "model_path": ("STRING", {"default": "Lightricks/LTX-Video"}),
+                "sampler_name": (
+                    ["DPM++ 3M SDE Karras", "DPM++ 2M Karras", "Euler", "DDIM"],
+                    {"default": "DPM++ 3M SDE Karras"},
+                ),
             },
         }
 
@@ -107,22 +112,36 @@ class LTXVFullPipeline:
         }
         return duration_map.get(duration, 200)
 
-    def _enhance_prompt(self, prompt: str, mode: str) -> str:
+    def _enhance_prompt(
+        self, prompt: str, mode: str, quality_mode: str = "Standard"
+    ) -> str:
         """
         Enhance prompt for better realism
-        Based on WAN2.x and CogVideoX best practices
+        Based on WAN2.x, CogVideoX, and LTX v2 best practices
         """
         if mode == "Basic":
             # Auto-enhance basic prompts with realism keywords
-            enhancement = (
-                "photorealistic, high detail, coherent motion, "
-                "cinematic lighting, 8k uhd, professional quality, "
-                "natural colors, smooth motion"
-            )
+            if quality_mode == "Ultra":
+                # LTX v2-level enhancement for enterprise GPUs
+                enhancement = (
+                    "hyper-realistic, 8k ultra details, flawless motion, "
+                    "LTX v2 cinematic quality, professional cinematography, "
+                    "perfect temporal consistency, ultra sharp focus, "
+                    "volumetric lighting, film grain, ray tracing"
+                )
+            else:
+                # Standard enhancement
+                enhancement = (
+                    "photorealistic, high detail, coherent motion, "
+                    "cinematic lighting, 8k uhd, professional quality, "
+                    "natural colors, smooth motion"
+                )
             return f"{prompt}, {enhancement}"
         else:
             # Detailed mode - add minimal enhancement
-            if "realistic" not in prompt.lower():
+            if quality_mode == "Ultra" and "hyper-realistic" not in prompt.lower():
+                return f"{prompt}, hyper-realistic, LTX v2 quality"
+            elif "realistic" not in prompt.lower():
                 return f"{prompt}, photorealistic"
             return prompt
 
@@ -195,14 +214,17 @@ class LTXVFullPipeline:
         duration,
         resolution,
         prompt_mode,
+        quality_mode,
         steps,
         cfg_scale,
         seed,
         negative_prompt="",
         model_path="Lightricks/LTX-Video",
+        sampler_name="DPM++ 3M SDE Karras",
     ):
         """
         Main video generation function
+        Enterprise GPU optimized for H100/H200/RTX Pro 6000
         """
         if not LTX_VIDEO_AVAILABLE:
             raise RuntimeError(
@@ -221,21 +243,27 @@ class LTXVFullPipeline:
         width, height = self._get_resolution_params(resolution)
         target_frames = self._get_frame_count(duration)
 
-        # Base generation at lower resolution for speed
-        base_width, base_height = 768, 512
-        base_frames = 25  # Base generation frames
+        # Base generation - use higher resolution for Ultra quality mode
+        if quality_mode == "Ultra":
+            base_width, base_height = 1024, 576  # Native LTX resolution
+            base_frames = 33  # More frames for better interpolation
+        else:
+            base_width, base_height = 768, 512
+            base_frames = 25
 
         # Enhance prompt
-        enhanced_prompt = self._enhance_prompt(prompt, prompt_mode)
+        enhanced_prompt = self._enhance_prompt(prompt, prompt_mode, quality_mode)
         optimized_steps = self._optimize_steps(steps, prompt_mode)
 
-        print("[LTX-Video] Generating video:")
+        print(f"[LTX-Video v2.0.1] Generating video (Quality: {quality_mode}):")
         print(f"  - Prompt: {enhanced_prompt[:100]}...")
         print(f"  - Duration: {duration} ({target_frames} frames)")
         print(f"  - Resolution: {resolution} ({width}x{height})")
         print(f"  - Steps: {optimized_steps}")
         print(f"  - CFG Scale: {cfg_scale}")
+        print(f"  - Sampler: {sampler_name}")
         print(f"  - Seed: {seed}")
+        print(f"  - Quality Mode: {quality_mode} (Base: {base_width}x{base_height})")
 
         try:
             # Initialize pipeline if needed

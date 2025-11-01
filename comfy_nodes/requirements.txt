@@ -1,10 +1,10 @@
-# LTX-Video Production ComfyUI Nodes Requirements
+# LTX-Video Production ComfyUI Nodes Requirements v2.0.1
 # Base dependencies
 torch>=2.1.0
 diffusers>=0.28.2
 transformers>=4.47.2,<4.52.0
 sentencepiece>=0.1.96
-huggingface-hub~=0.30
+huggingface-hub>=0.24.0
 einops
 timm
 
@@ -22,3 +22,4 @@ opencv-python>=4.8.0
 # Optimization
 accelerate>=0.20.0
 safetensors>=0.3.1
+tqdm>=4.65.0  # For download progress
