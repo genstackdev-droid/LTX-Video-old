@@ -65,6 +65,7 @@ class LTXVFullPipeline:
                     {"default": 10.0, "min": 1.0, "max": 20.0, "step": 0.5},
                 ),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 0x7FFFFFFFFFFFFFFF}),
+                "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
             },
             "optional": {
                 "negative_prompt": (
@@ -104,13 +105,10 @@ class LTXVFullPipeline:
         }
         return resolution_map.get(resolution, (1920, 1080))
 
-    def _get_frame_count(self, duration: str) -> int:
-        """Calculate frame count for target duration at 25 FPS"""
-        duration_map = {
-            "8s": 200,  # 8 seconds * 25 FPS
-            "10s": 250,  # 10 seconds * 25 FPS
-        }
-        return duration_map.get(duration, 200)
+    def _get_frame_count(self, duration: str, fps: int = 25) -> int:
+        """Calculate frame count for target duration at specified FPS"""
+        duration_seconds = int(duration.rstrip('s'))
+        return duration_seconds * fps
 
     def _enhance_prompt(
         self, prompt: str, mode: str, quality_mode: str = "Standard"
@@ -218,6 +216,7 @@ class LTXVFullPipeline:
         steps,
         cfg_scale,
         seed,
+        fps,
         negative_prompt="",
         model_path="Lightricks/LTX-Video",
         sampler_name="DPM++ 3M SDE Karras",
@@ -225,6 +224,7 @@ class LTXVFullPipeline:
         """
         Main video generation function
         Enterprise GPU optimized for H100/H200/RTX Pro 6000
+        Supports variable FPS from 12 to 120 for smooth, high-quality videos
         """
         if not LTX_VIDEO_AVAILABLE:
             raise RuntimeError(
@@ -241,7 +241,7 @@ class LTXVFullPipeline:
 
         # Get parameters
         width, height = self._get_resolution_params(resolution)
-        target_frames = self._get_frame_count(duration)
+        target_frames = self._get_frame_count(duration, fps)
 
         # Base generation - use higher resolution for Ultra quality mode
         if quality_mode == "Ultra":
@@ -257,7 +257,7 @@ class LTXVFullPipeline:
 
         print(f"[LTX-Video v2.0.1] Generating video (Quality: {quality_mode}):")
         print(f"  - Prompt: {enhanced_prompt[:100]}...")
-        print(f"  - Duration: {duration} ({target_frames} frames)")
+        print(f"  - Duration: {duration} ({target_frames} frames @ {fps} FPS)")
         print(f"  - Resolution: {resolution} ({width}x{height})")
         print(f"  - Steps: {optimized_steps}")
         print(f"  - CFG Scale: {cfg_scale}")
@@ -273,17 +273,35 @@ class LTXVFullPipeline:
 
             # Generate base video
             print(f"[LTX-Video] Generating base video at {base_width}x{base_height}...")
-            output = self.pipeline(
-                prompt=enhanced_prompt,
-                negative_prompt=negative_prompt,
-                num_inference_steps=optimized_steps,
-                guidance_scale=cfg_scale,
-                height=base_height,
-                width=base_width,
-                num_frames=base_frames,
-                frame_rate=25.0,
-                generator=torch.Generator(device=self.device).manual_seed(seed),
-            )
+            
+            # Use explicit timesteps if available (required for checkpoints with allowed_inference_steps)
+            # Otherwise, use num_inference_steps and let the scheduler generate timesteps
+            if hasattr(self.pipeline, 'allowed_inference_steps') and self.pipeline.allowed_inference_steps is not None:
+                print(f"[LTX-Video] Using checkpoint timesteps: {self.pipeline.allowed_inference_steps}")
+                output = self.pipeline(
+                    prompt=enhanced_prompt,
+                    negative_prompt=negative_prompt,
+                    timesteps=self.pipeline.allowed_inference_steps,
+                    guidance_scale=cfg_scale,
+                    height=base_height,
+                    width=base_width,
+                    num_frames=base_frames,
+                    frame_rate=float(fps),
+                    generator=torch.Generator(device=self.device).manual_seed(seed),
+                )
+            else:
+                print(f"[LTX-Video] Using num_inference_steps: {optimized_steps}")
+                output = self.pipeline(
+                    prompt=enhanced_prompt,
+                    negative_prompt=negative_prompt,
+                    num_inference_steps=optimized_steps,
+                    guidance_scale=cfg_scale,
+                    height=base_height,
+                    width=base_width,
+                    num_frames=base_frames,
+                    frame_rate=float(fps),
+                    generator=torch.Generator(device=self.device).manual_seed(seed),
+                )
 
             # Extract frames
             frames = output.frames[0]  # Shape: (T, H, W, C)
@@ -610,7 +628,7 @@ class LTXVFrameInterpolator:
         return {
             "required": {
                 "frames": ("IMAGE",),
-                "target_fps": ("INT", {"default": 25, "min": 12, "max": 60}),
+                "target_fps": ("INT", {"default": 25, "min": 12, "max": 120}),
                 "interpolation_mode": (
                     ["Linear", "RIFE", "FILM"],
                     {"default": "Linear"},

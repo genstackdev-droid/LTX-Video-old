@@ -14,6 +14,7 @@ Production-ready ComfyUI custom node for LTX-Video text-to-video generation with
 - **⏱️ Extended Duration**: Generate 8-10 second videos *(implementation pending)*
 - **🎯 4K Output**: Support for 1080p and 4K resolution *(implementation pending)*
 - **✨ Auto-Prompt Enhancement**: Transform basic prompts into professional results
+- **🎞️ Adjustable Frame Rate**: Generate videos at 12-120 FPS for smooth, high-quality output
 - **💾 VRAM Efficient**: Optimized for 12GB+ VRAM GPUs
 - **📦 Auto-Download**: Models download automatically from HuggingFace
 
@@ -205,6 +206,7 @@ All workflows include:
 
 - [Installation Guide](docs/INSTALL.md) - Detailed installation instructions
 - [Quick Reference](docs/QUICK_REFERENCE.md) - Node parameters and workflows
+- [FPS Configuration Guide](docs/FPS_GUIDE.md) - Adjustable frame rate (12-120 FPS) usage and best practices
 - [ComfyUI Documentation](docs/README_COMFYUI.md) - Complete ComfyUI integration guide
 - [Workflows](workflows/) - Example workflow JSON files
 - [Original README](README_ORIGINAL.md) - LTX-Video project information
