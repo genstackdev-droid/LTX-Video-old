@@ -79,7 +79,14 @@ def download_model(model_config: Dict, models_dir: Path) -> bool:
 
 def download_all_models():
     """Download all required models"""
-    from . import MODELS_CONFIG
+    try:
+        from . import MODELS_CONFIG
+    except ImportError:
+        # Handle standalone execution
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).parent))
+        from __init__ import MODELS_CONFIG
 
     models_dir = get_comfyui_models_dir()
 

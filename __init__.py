@@ -20,7 +20,7 @@ __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
 # Model auto-download configuration
 MODELS_CONFIG = {
     "ltx_video": {
-        "filename": "ltx-video-13b-v0.9.7-distilled.safetensors",
+        "filename": "ltxv-13b-0.9.8-distilled.safetensors",
         "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors",
         "size_gb": 13,
         "path": "checkpoints",
@@ -85,7 +85,7 @@ def check_and_download_models():
             print("-" * 70)
             print("\nTo auto-download all models, run:")
             print(
-                '  python -c "from comfy_nodes.model_downloader import download_all_models; download_all_models()"'
+                '  python -c "from model_downloader import download_all_models; download_all_models()"'
             )
 
             print("\n" + "-" * 70)

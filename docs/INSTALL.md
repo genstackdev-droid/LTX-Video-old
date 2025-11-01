@@ -61,12 +61,12 @@ cd LTX-Video-old
 
 **Windows**:
 ```cmd
-python -m pip install -r comfy_nodes/requirements.txt
+python -m pip install -r requirements_comfyui.txt
 ```
 
 **Linux/macOS**:
 ```bash
-pip install -r comfy_nodes/requirements.txt
+pip install -r requirements_comfyui.txt
 ```
 
 #### Step 4: Restart ComfyUI
@@ -180,8 +180,8 @@ pip install bitsandbytes
 ### Import Example Workflows
 
 1. Locate workflow files:
-   - `comfy_nodes/workflows/ltx_production_workflow.json`
-   - `comfy_nodes/workflows/ltx_advanced_workflow.json`
+   - `workflows/ltx_production_workflow.json`
+   - `workflows/ltx_advanced_workflow.json`
 
 2. In ComfyUI:
    - Click "Load" button
@@ -258,7 +258,7 @@ pip install -e .[inference]
 python -m venv ltxvideo_env
 source ltxvideo_env/bin/activate  # Linux/macOS
 ltxvideo_env\Scripts\activate     # Windows
-pip install -r comfy_nodes/requirements.txt
+pip install -r requirements_comfyui.txt
 ```
 
 2. Point ComfyUI to use this environment
@@ -334,7 +334,7 @@ pip install -r comfy_nodes/requirements.txt
 ```bash
 cd ComfyUI/custom_nodes/LTX-Video-old
 git pull origin main
-pip install -r comfy_nodes/requirements.txt --upgrade
+pip install -r requirements_comfyui.txt --upgrade
 ```
 
 Then restart ComfyUI.
@@ -366,8 +366,8 @@ Models are stored separately and won't be deleted. You can reinstall without re-
 
 ### Resources
 
-- **Documentation**: `comfy_nodes/README_COMFYUI.md`
-- **Examples**: `comfy_nodes/workflows/`
+- **Documentation**: `docs/README_COMFYUI.md`
+- **Examples**: `workflows/`
 - **Changelog**: `CHANGELOG.md`
 - **Issues**: GitHub Issues page
 
