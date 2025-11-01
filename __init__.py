@@ -20,7 +20,7 @@ __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
 # Model auto-download configuration
 MODELS_CONFIG = {
     "ltx_video": {
-        "filename": "ltx-video-13b-v0.9.7-distilled.safetensors",
+        "filename": "ltxv-13b-0.9.8-distilled.safetensors",
         "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors",
         "size_gb": 13,
         "path": "checkpoints",

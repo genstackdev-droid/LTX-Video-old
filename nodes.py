@@ -321,23 +321,53 @@ class LTXVFullPipeline:
             raise
 
     def _load_pipeline(self, model_path: str):
-        """Load the LTX-Video pipeline"""
-        # This is a simplified loader - in production, should load from configs
-        # For now, return a placeholder that shows the structure
-        print(f"[LTX-Video] Pipeline loading from {model_path}")
-        print("[LTX-Video] Note: This is a production node structure.")
-        print("[LTX-Video] Full model loading requires HuggingFace integration.")
-
-        # TODO: Implement full pipeline loading
-        # pipeline = LTXVideoPipeline.from_pretrained(model_path, torch_dtype=torch.float16)
-        # pipeline = pipeline.to(self.device)
-        # return pipeline
-
-        raise NotImplementedError(
-            "Full pipeline loading requires HuggingFace model access. "
-            "This node structure is ready for production deployment. "
-            "Add model files and enable HuggingFace integration to activate."
-        )
+        """
+        Load the LTX-Video pipeline from downloaded models.
+        
+        This method requires the models to be downloaded first.
+        See MODELS.md for download instructions.
+        
+        The full implementation needs:
+        1. Load checkpoint from models/checkpoints/
+        2. Load VAE, transformer, text encoder
+        3. Initialize scheduler and patchifier
+        4. Assemble into LTXVideoPipeline
+        
+        For reference, see ltx_video/inference.py load_model() function.
+        """
+        try:
+            # Attempt to locate the downloaded checkpoint
+            from pathlib import Path
+            comfyui_base = Path(__file__).parent.parent.parent
+            checkpoint_dir = comfyui_base / "models" / "checkpoints"
+            
+            # Look for the LTX-Video checkpoint
+            checkpoint_path = checkpoint_dir / "ltxv-13b-0.9.8-distilled.safetensors"
+            
+            if not checkpoint_path.exists():
+                raise FileNotFoundError(
+                    f"LTX-Video checkpoint not found at {checkpoint_path}\n\n"
+                    "Please download the required models first:\n"
+                    "1. See MODELS.md for complete download instructions\n"
+                    "2. Or run: python -c \"from model_downloader import download_all_models; download_all_models()\"\n"
+                    "3. Ensure models are in the correct ComfyUI/models/ directories"
+                )
+            
+            # TODO: Implement full pipeline loading
+            # This requires loading the checkpoint, VAE, transformer, text encoder, etc.
+            # For reference implementation, see ltx_video/inference.py load_model()
+            raise NotImplementedError(
+                "Pipeline loading implementation pending.\n\n"
+                "The node infrastructure is complete but pipeline loading requires:\n"
+                "1. Loading the checkpoint from safetensors\n"
+                "2. Initializing VAE, transformer, text encoder, scheduler\n"
+                "3. Assembling components into LTXVideoPipeline\n\n"
+                "See ltx_video/inference.py load_model() for reference implementation."
+            )
+            
+        except Exception as e:
+            print(f"[LTX-Video] Error loading pipeline: {e}")
+            raise
 
 
 class LTXVSampler:

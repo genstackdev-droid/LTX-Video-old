@@ -8,14 +8,16 @@ Production-ready ComfyUI custom node for LTX-Video text-to-video generation with
 
 ## ✨ Features
 
-- **🎬 Text-to-Video Generation**: Create videos from text descriptions
-- **🖼️ Image-to-Video**: Animate static images with motion
-- **📹 Multi-Keyframe Support**: Control video with multiple reference frames
-- **⏱️ Extended Duration**: Generate 8-10 second videos
-- **🎯 4K Output**: Support for 1080p and 4K resolution
+- **🎬 Text-to-Video Generation**: Create videos from text descriptions *(implementation pending)*
+- **🖼️ Image-to-Video**: Animate static images with motion *(implementation pending)*
+- **📹 Multi-Keyframe Support**: Control video with multiple reference frames *(implementation pending)*
+- **⏱️ Extended Duration**: Generate 8-10 second videos *(implementation pending)*
+- **🎯 4K Output**: Support for 1080p and 4K resolution *(implementation pending)*
 - **✨ Auto-Prompt Enhancement**: Transform basic prompts into professional results
 - **💾 VRAM Efficient**: Optimized for 12GB+ VRAM GPUs
 - **📦 Auto-Download**: Models download automatically from HuggingFace
+
+**Note**: The ComfyUI node infrastructure is complete, but the actual pipeline loading implementation is pending. The models can be downloaded and the node structure is ready for integration. See `nodes.py` `_load_pipeline()` method for integration details.
 
 ## 🚀 Quick Installation
 
