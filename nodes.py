@@ -64,7 +64,7 @@ class LTXVFullPipeline:
                     "FLOAT",
                     {"default": 10.0, "min": 1.0, "max": 20.0, "step": 0.5},
                 ),
-                "seed": ("INT", {"default": -1, "min": -1, "max": 0xFFFFFFFFFFFFFFFF}),
+                "seed": ("INT", {"default": -1, "min": -1, "max": 0x7FFFFFFFFFFFFFFF}),
             },
             "optional": {
                 "negative_prompt": (
@@ -233,7 +233,7 @@ class LTXVFullPipeline:
 
         # Setup
         if seed == -1:
-            seed = torch.randint(0, 0xFFFFFFFFFFFFFFFF, (1,)).item()
+            seed = torch.randint(0, 0x7FFFFFFFFFFFFFFF, (1,)).item()
 
         torch.manual_seed(seed)
         if torch.cuda.is_available():
@@ -394,7 +394,7 @@ class LTXVSampler:
                     ["karras", "exponential", "normal"],
                     {"default": "karras"},
                 ),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0x7FFFFFFFFFFFFFFF}),
             }
         }
 
