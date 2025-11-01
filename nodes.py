@@ -74,12 +74,12 @@ class LTXVFullPipeline:
                         "default": "blurry, low quality, distorted, watermark, text, artifacts, duplicate frames, low resolution",
                     },
                 ),
-                "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
                 "model_path": ("STRING", {"default": "Lightricks/LTX-Video"}),
                 "sampler_name": (
                     ["DPM++ 3M SDE Karras", "DPM++ 2M Karras", "Euler", "DDIM"],
                     {"default": "DPM++ 3M SDE Karras"},
                 ),
+                "fps": ("INT", {"default": 25, "min": 12, "max": 120, "step": 1}),
             },
         }
 
