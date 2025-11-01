@@ -35,7 +35,7 @@
 ### Step 1: Clone Repository
 
 ```bash
-cd ComfyUI/custom_nodes/
+cd /ComfyUI/custom_nodes/
 git clone https://github.com/genstackdev-droid/LTX-Video-old
 ```
 
@@ -89,15 +89,15 @@ If automatic download fails, download manually from HuggingFace:
 
 1. **LTX-Video Core Model** (~13GB)
    - URL: https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors
-   - Save to: `ComfyUI/models/checkpoints/ltx-video-13b-v0.9.7-distilled.safetensors`
+   - Save to: `/ComfyUI/models/checkpoints/ltx-video-13b-v0.9.7-distilled.safetensors`
 
 2. **Text Encoder** (~4.7GB)
    - URL: https://huggingface.co/Lightricks/LTX-Video/resolve/main/text_encoders/t5-v1_1-xxl-fp16.safetensors
-   - Save to: `ComfyUI/models/clip/t5-v1_1-xxl-fp16.safetensors`
+   - Save to: `/ComfyUI/models/clip/t5-v1_1-xxl-fp16.safetensors`
 
 3. **VAE** (~335MB)
    - URL: https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
-   - Save to: `ComfyUI/models/vae/vae-ft-mse-840000-ema-pruned.safetensors`
+   - Save to: `/ComfyUI/models/vae/vae-ft-mse-840000-ema-pruned.safetensors`
 
 ## 💻 System Requirements
 
@@ -234,7 +234,7 @@ Here's the complete setup in one go:
 
 ```bash
 # 1. Clone the repository into ComfyUI custom_nodes
-cd ComfyUI/custom_nodes/
+cd /ComfyUI/custom_nodes/
 git clone https://github.com/genstackdev-droid/LTX-Video-old
 cd LTX-Video-old
 
