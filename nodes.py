@@ -281,6 +281,7 @@ class LTXVFullPipeline:
                 height=base_height,
                 width=base_width,
                 num_frames=base_frames,
+                frame_rate=25.0,
                 generator=torch.Generator(device=self.device).manual_seed(seed),
             )
 
