@@ -420,8 +420,8 @@ class LTXVFullPipeline:
             vae = CausalVideoAutoencoder.from_pretrained(ckpt_path)
             
             print("[LTX-Video] Loading transformer...")
-            # Use bfloat16 precision for compatibility
-            transformer = Transformer3DModel.from_pretrained(ckpt_path).to(torch.bfloat16)
+            # Use bfloat16 precision for compatibility (load directly in bfloat16 to save memory)
+            transformer = Transformer3DModel.from_pretrained(ckpt_path, torch_dtype=torch.bfloat16)
             
             print("[LTX-Video] Loading scheduler...")
             scheduler = RectifiedFlowScheduler.from_pretrained(ckpt_path)
@@ -468,15 +468,11 @@ class LTXVFullPipeline:
             # Create patchifier
             patchifier = SymmetricPatchifier(patch_size=1)
             
-            # Move models to device
+            # Move models to device and convert to bfloat16 in single operation (memory efficient)
             print(f"[LTX-Video] Moving models to device: {self.device}")
-            transformer = transformer.to(self.device)
-            vae = vae.to(self.device)
-            text_encoder = text_encoder.to(self.device)
-            
-            # Convert to bfloat16 for efficiency
-            vae = vae.to(torch.bfloat16)
-            text_encoder = text_encoder.to(torch.bfloat16)
+            transformer = transformer.to(device=self.device, dtype=torch.bfloat16)
+            vae = vae.to(device=self.device, dtype=torch.bfloat16)
+            text_encoder = text_encoder.to(device=self.device, dtype=torch.bfloat16)
             
             # Assemble pipeline (without prompt enhancers for simplicity)
             submodel_dict = {
