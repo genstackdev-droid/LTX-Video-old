@@ -339,6 +339,7 @@ class LTXVFullPipeline:
                     num_frames=base_frames,
                     frame_rate=float(base_fps),  # Use base_fps for generation
                     generator=torch.Generator(device=self.device).manual_seed(seed),
+                    vae_per_channel_normalize=True,  # Enable VAE normalization
                 )
             else:
                 print(f"[LTX-Video] Using num_inference_steps: {optimized_steps}")
@@ -352,6 +353,7 @@ class LTXVFullPipeline:
                     num_frames=base_frames,
                     frame_rate=float(base_fps),  # Use base_fps for generation
                     generator=torch.Generator(device=self.device).manual_seed(seed),
+                    vae_per_channel_normalize=True,  # Enable VAE normalization
                 )
 
             # Extract frames
